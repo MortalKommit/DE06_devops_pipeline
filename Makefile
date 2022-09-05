@@ -5,6 +5,9 @@ install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
+linter-test-install:
+	pip install pylint pytest
+
 test:
 	#python -m pytest -vv --cov=myrepolib tests/*.py
 	#python -m pytest --nbval notebook.ipynb
