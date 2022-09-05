@@ -1,5 +1,5 @@
 # Download miniconda for python 3.7
-if  [[ -n $(which conda)]]
+if  [[ -n "$(which conda)" ]]
 then 
     echo "Conda not found"
 else echo "Conda found"
