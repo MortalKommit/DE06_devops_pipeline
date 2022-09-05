@@ -1,5 +1,5 @@
 # Download miniconda for python 3.7
-condapath=$(which conda)
+condapath=$(which mako)
 if  [[ $? != 0 ]]
 then 
     echo "Conda not found"
