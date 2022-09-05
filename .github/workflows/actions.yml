@@ -16,6 +16,9 @@ jobs:
     - name: Install dependencies
       run: |
         make -f Makefile.old install
+    - name: Install linter and test libraries
+      run: |
+        make -f Makefile.old linter-test-install
     - name: Lint with pylint
       run: |
         make -f Makefile.old lint
