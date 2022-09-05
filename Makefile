@@ -11,7 +11,7 @@ test:
 
 
 lint:
-	which pylint
+	FILES ="$(shell which pylint)"; echo $$FILES
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles
 	pylint --disable=R,C,W1203,W0703 app.py
 
