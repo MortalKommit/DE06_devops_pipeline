@@ -1,0 +1,1 @@
+az webapp up -n flask-ml-service206174

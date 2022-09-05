@@ -15,11 +15,11 @@ jobs:
         python-version: 3.7
     - name: Install dependencies
       run: |
-        make install
+        make -f Makefile.old install
     - name: Lint with pylint
       run: |
-        make lint
+        make -f Makefile.old lint
     - name: Test with pytest
       run: |
-        make test
+        make -f Makefile.old test
         
