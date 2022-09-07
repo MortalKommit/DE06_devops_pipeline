@@ -1,5 +1,5 @@
 setup:
-	python3.7 -m venv ~/.udacity-devops
+	python3.7 -m venv ~/.udacity-devops 
 
 install:
 	pip install --upgrade pip &&\
@@ -14,7 +14,6 @@ test:
 
 
 lint:
-	FILES ="$(shell which pylint)"; echo $$FILES
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles
 	pylint --disable=R,C,W1203,W0703 app.py
 
