@@ -3,7 +3,7 @@
 wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.9.2-Linux-x86_64.sh && sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
 export PATH=~/miniconda3/bin:$PATH
 
-git clone https://github.com/MortalKommit/DE06_devops_pipeline.git && cd $(basename $_ .git)
+#git clone https://github.com/MortalKommit/DE06_devops_pipeline.git && cd $(basename $_ .git)
 
 az vm create --name agentVM --resource-group Azuredevops --size Standard_DS1_v2 \
     --image UbuntuLTS --admin-username  devopsagent --admin-password devopsagent@123 --nsg-rule SSH \
