@@ -7,13 +7,21 @@ odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+
 
 apphostname=$(az webapp show  --resource-group Azuredevops --name  flask-ml-service${odl_number} \
             --query "defaultHostName" -o tsv)
+
 webappstate=$(az webapp show  --resource-group Azuredevops --name  flask-ml-service${odl_number} \
             --query "state" -o tsv)
 
-if ! [[ ( -n $apphostname ) || ( -n $webappstate ) || ! ( $webappstate -eq "Running") ]]
+if  [[ ! ( -n $apphostname ) || ! ( -n $webappstate ) || \
+   (! ( $webappstate -eq "Running") && ( $webappstate -eq "Stopped")  ]]
 then 
    echo "Webapp service not started. Attempting to start service..."
    az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 
+   apphostname=$(az webapp show  --resource-group Azuredevops --name  flask-ml-service${odl_number} \
+            --query "defaultHostName" -o tsv)
+elif [[ $webappstate -eq "Stopped" ]]
+then
+   echo "Webapp service stopped. Restarting."
+   az webapp start --name "flask-ml-service${odl_number}" --resource-group Azuredevops
 fi
 
 # POST method predict
