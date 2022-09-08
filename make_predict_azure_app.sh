@@ -3,6 +3,19 @@
 PORT=443
 echo "Port: $PORT"
 
+odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+")
+
+apphostname=$(az webapp show  --resource-group Azuredevops --name  flask-ml-service${odl_number} \
+            --query "defaultHostName" -o tsv)
+webappstate=$(az webapp show  --resource-group Azuredevops --name  flask-ml-service${odl_number} \
+            --query "state" -o tsv)
+
+if ! [[ ( -n $apphostname ) || ( -n $webappstate ) || ! ( $webappstate -eq "Running") ]]
+then 
+   echo "Webapp service not started. Attempting to start service..."
+   az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 
+fi
+
 # POST method predict
 curl -d '{
    "CHAS":{
@@ -25,5 +38,5 @@ curl -d '{
    }
 }'\
      -H "Content-Type: application/json" \
-     -X POST https://<yourappname>.azurewebsites.net:$PORT/predict 
-     #your application name <yourappname>goes here
+     -X POST https://$apphostname:$PORT/predict 
+     # Application name set via variables

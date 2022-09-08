@@ -14,4 +14,4 @@ export PATH=~/miniconda3/bin:$PATH
 # Alias command
 alias python3=python3.7
 
-#az webapp up -n flask-ml-service206174
+az webapp up -n flask-ml-service206174
