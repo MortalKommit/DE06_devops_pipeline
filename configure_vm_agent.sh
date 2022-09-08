@@ -19,8 +19,8 @@ az vm open-port --resource-group Azuredevops --name agentVM --port 443
 #     --priority 1000 \
 #     --destination-port-range 443
 
-az vm run-command invoke --resource-group Azuredevops --name agentVM \
-    --command-id RunShellScript --scripts @package_install_script.sh
+# az vm run-command invoke --resource-group Azuredevops --name agentVM \
+#     --command-id RunShellScript --scripts @package_install_script.sh
 
 # download_folder=$(az vm run-command invoke --resource-group Azuredevops --name agentVM --command-id RunShellScript \
 #     --scripts "echo \$PWD" --query "value[].message"  | grep -oP "/(.*)/" )
@@ -31,7 +31,7 @@ VMPUBLICIP="$(az vm show --name agentVM --resource-group Azuredevops --show-deta
 
 #scp ./package_install_script.sh configure_pylint.sh $admin_user@$VMPUBLICIP:"${download_folder}"
 
-rsync ./package_install_script.sh configure_pylint.sh $admin_user@$VMPUBLICIP:"${home_folder}"
+rsync ./package_install_script.sh package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
 
 package_log=$(az vm run-command invoke --resource-group Azuredevops --name agentVM --command-id RunShellScript  \
     --scripts "sudo -u $admin_user bash $home_folder/package_install_script.sh" --query "value[].message" | 
