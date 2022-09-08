@@ -41,8 +41,9 @@ package_log=$(az vm run-command invoke --resource-group Azuredevops --name agent
 
 echo -e $package_log > package_install_log.log
 
-az vm restart --name agentVM --resource-group Azuredevops
+echo "Package Installation Complete."
 
+az vm restart --name agentVM --resource-group Azuredevops
 # Wait 40 seconds
 echo "Waiting for VM to restart..."
 sleep 40s
@@ -52,7 +53,7 @@ ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
     # Download the agent
     curl -O https://vstsagentpackage.azureedge.net/agent/2.210.0/vsts-agent-linux-x64-2.210.0.tar.gz
     # Create the agent
-    mkdir myagent && cd myagent && \
+    rm -r myagent; mkdir myagent && cd myagent && \
     tar -zxvf ../vsts-agent-linux-x64-2.210.0.tar.gz && \
     exit
 EOF
