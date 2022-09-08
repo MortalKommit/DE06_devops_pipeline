@@ -21,7 +21,7 @@ then
 elif [[ $webappstate -eq "Stopped" ]]
 then
    echo "Webapp service stopped. Restarting."
-   az webapp start --name "flask-ml-service${odl_number}" --resource-group Azuredevops
+   az webapp restart --name "flask-ml-service${odl_number}" --resource-group Azuredevops
 fi
 
 # POST method predict
