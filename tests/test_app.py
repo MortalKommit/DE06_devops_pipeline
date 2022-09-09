@@ -1,7 +1,5 @@
-from urllib import request
 import pytest
 import json
-import os
 from app import app
 
 
@@ -20,7 +18,5 @@ def test_homepage_request(client):
 def test_prediction_request(client):
     with open("sample_request.json") as f:
         request_data = json.load(f)
-        client.post("/predict", json=request_data)
-
-# def test_valid_json_payload(flask_response):
-#     assert type(flask_response) == dict
+        r = client.post("/predict", json=request_data)
+        print(r)
