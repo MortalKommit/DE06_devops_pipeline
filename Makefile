@@ -4,9 +4,7 @@ setup:
 install:
 	pip install --upgrade pip && \
 		pip install -r requirements.txt && \
-		pip install locust && \
-		pip install requests
-
+		pip install locust
 linter-test-install:
 	pip install pylint pytest
 test:
@@ -14,8 +12,11 @@ test:
 	#python3 -m pytest --nbval notebook.ipynb
 	#nohup timeout 60 python app.py & 
 	#echo $!
-	python3 -m pytest -vv tests/*.py
+	python3 -m pytest -vv tests/*.py -p no:warnings
 load-test:
+	nohup timeout 60 python app.py &
+	pid=$!
+	PORT=5000
 	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:${PORT} -t 60s
 lint:
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles
