@@ -6,7 +6,7 @@ import requests
 import app
 
 @pytest.fixture()
-def flask_response():
+def client():
     with open("sample_request.json") as f:
         app.config['TESTING'] = True
         client = app.test_client()
