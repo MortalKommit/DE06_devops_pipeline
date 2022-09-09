@@ -3,7 +3,7 @@ import pytest
 import json
 import os
 import requests
-import app
+from DE06_devops_pipeline import app
 
 @pytest.fixture()
 def client():
