@@ -6,14 +6,14 @@ trigger:
 - master
 
 # Using current pool name
-pool: DevOpsAgent
+pool: $(poolName)
 
 variables:
   # TODO: Replace the service connection name
-  azureServiceConnectionId: 'serviceconnectionflask'
+  azureServiceConnectionId: '$(azureServiceConnectionId)'
   
   # TODO: Replace 'mywebapp193576' with the existing Web App name
-  webAppName: 'flask-ml-service206174'
+  webAppName: '$(webAppName)'
 
   # Environment name
   environmentName: 'flask-ml-service'
@@ -26,7 +26,7 @@ stages:
   displayName: Build stage
   jobs:
   - job: BuildJob
-    pool: DevOpsAgent
+    pool: $(poolName)
     steps:    
     - script: |
         python3.7 -m pip install --upgrade pip
