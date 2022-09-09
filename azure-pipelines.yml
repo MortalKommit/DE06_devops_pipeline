@@ -10,7 +10,7 @@ pool: $(poolName)
 
 variables:
   # TODO: Replace the service connection name
-  azureServiceConnectionId: '$(azureServiceConnectionId)'
+  azureServiceConnectionId: 'spServiceConnection'
   
   # TODO: Replace 'mywebapp193576' with the existing Web App name
   webAppName: '$(webAppName)'
