@@ -2,8 +2,9 @@ setup:
 	python3.7 -m venv ~/.udacity-devops 
 
 install:
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+	pip install --upgrade pip && \
+		pip install -r requirements.txt && \
+		pip install locust
 
 linter-test-install:
 	pip install pylint pytest
