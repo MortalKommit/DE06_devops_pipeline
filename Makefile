@@ -15,7 +15,7 @@ test:
 load-test:
 	nohup timeout 60 python app.py &
 	pid=${$!}
-	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 45s
+	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 40s
 
 lint:
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles

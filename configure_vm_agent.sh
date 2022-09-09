@@ -57,7 +57,7 @@ VMPUBLICIP="$(az vm show --name agentVM --resource-group Azuredevops --show-deta
 
 #scp ./package_install_script.sh configure_pylint.sh $admin_user@$VMPUBLICIP:"${download_folder}"
 
-rsync ./package_install_script.sh package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
+rsync ./package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
 
 package_log=$(az vm run-command invoke --resource-group Azuredevops --name agentVM --command-id RunShellScript  \
     --scripts "sudo -u $admin_user bash $home_folder/package_install_script.sh" --query "value[].message" | 
@@ -73,7 +73,11 @@ echo "Waiting for VM to restart..."
 sleep 40s
 
 # Read PAT from user
-read -sp "Enter Personal Access Token(PAT) defined in Azure pipelines: " pat
+
+while read -sp "Enter Personal Access Token(PAT) defined in Azure pipelines: " pat; do
+    if [ -z $pat ]; then
+        break
+    fi
 
 # The steps below require prompts to SSH
 ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
