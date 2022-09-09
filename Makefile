@@ -1,7 +1,7 @@
 setup:
 	python3.7 -m venv ~/.udacity-devops 
-	pip install pylint pytest
-
+	python3.7 -m pip install pylint pytest
+	python3.7 -m pip list
 install:
 	pip install --upgrade pip && \
 		pip install -r requirements.txt && \
