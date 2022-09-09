@@ -72,6 +72,9 @@ az vm restart --name agentVM --resource-group Azuredevops
 echo "Waiting for VM to restart..."
 sleep 40s
 
+fullorgname=$(az account show --query user.name -o tsv | grep -oP "\K\w+" | head -1)
+devorgname=${fullorgname//_/}
+patTOKEN=6gsmhudp5tf6j4qe3ro6hc4kmc5yalbnbzvme4dlvguqz2j6irka
 # Read PAT from user
 
 # while read -sp "Enter Personal Access Token(PAT) defined in Azure pipelines: " pat; do
@@ -86,8 +89,8 @@ ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
     # Create the agent
     rm -r myagent; mkdir myagent && cd myagent && \
     tar -zxvf ../vsts-agent-linux-x64-2.210.0.tar.gz && \
-    ~/myagent$ ./config.sh -h
-    exit
+    ~/myagent$ ./config.sh --unattended --url https://dev.azure.com/$devorgname --auth pat --token $patTOKEN \
+        --pool vmAgentPool --agent vmAgent --acceptTeeEula
 EOF
 
 #scp ./vm_agent_internal_script.sh devopsagent@$VMPUBLICIP:~/

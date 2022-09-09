@@ -39,8 +39,9 @@ stages:
         export PYTHONPATH=$HOME/.local/lib/python3.7/site-packages
         make install
         make lint
+        make test
       workingDirectory: $(projectRoot)
-      displayName: 'Run lint tests'
+      displayName: 'Run lint and tests'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
