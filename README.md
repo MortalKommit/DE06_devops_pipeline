@@ -1,19 +1,30 @@
 ![Github Actions Build Status](https://github.com/MortalKommit/DE06_devops_pipeline/actions/workflows/actions.yml/badge.svg)
 
-# Overview
+# Project 06 : Building a CI/CD Pipeline in Azure
 
-<TODO: complete this with an overview of your project>
+## Overview
+
+This project creates a Continuous Integration/Continuous Delivery pipeline in Microsoft Azure from scratch following the Agile project management strategy.  
+In the first phase, under Agile Planning, tasks and features(stories) are listed and categorized with relevant tools.
+In Continuous Integration, tools that check and test code for errors are used.
+Finally in Continous Delivery, usage of the GitOps paradigm is explored, with tooling that help build and deploy applications in cloud-native environments.
+
 
 ## Project Plan
-<TODO: Project Plan
 
-* A link to a Trello board for the project
-* A link to a spreadsheet that includes the original and final project plan>
+### Agile Planning
+* [Public Trello Planning Board](https://trello.com/b/kMLggxDk/data-engineer-project-6-ci-cd-pipeline-in-azure)
+* [Google Sheets Link](https://docs.google.com/spreadsheets/d/1T-81GkagNErgDYWhceByO3krUganOfq5i20evQmcKzU/edit?usp=sharing)
+
+The plan for this project initially included simple setup and deployment of the app. However, as a result of Azure deprecating support for older versions of Python  
+in Azure shell, the default version of python was changed to python 3.9.
+![Python 3.9 Screen](images/azure-shell-python.png)
+
+This caused issues with running the project in the Azure shell environment, so a separate pre-compiled version of python had to be installed (due to a lack of privileges to run apt-get), using a miniconda distribution.
 
 ## Instructions
 
-<TODO:  
-* Architectural Diagram (Shows how key parts of the system work)>
+![Basic Architecture Diagram](images/building-a-ci-cd-pipeline.png)
 
 <TODO:  Instructions for running the Python project.  How could a user with no context run this project without asking you for any help.  Include screenshots with explicit steps to create that work. Be sure to at least include the following screenshots:
 
