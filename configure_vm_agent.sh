@@ -1,3 +1,4 @@
+# !/bin/bash
 # Download and setup conda path
 
 cd $HOME
@@ -19,12 +20,16 @@ alias python3=python3.7
 
 cd DE06_devops_pipeline
 
+echo "Configuring environment details..."
+
 conda create -n .env --file requirements.txt -y && conda activate 
 
 subscription_name=$(az account show --query name -o tsv)
 tenant_id=$(az account show --query tenantId -o tsv)
 odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+")
 
+# Start webapp
+echo "Starting Azure webapp service..."
 az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 
 
 #git clone https://github.com/MortalKommit/DE06_devops_pipeline.git && cd $(basename $_ .git)
@@ -74,13 +79,21 @@ sleep 40s
 
 fullorgname=$(az account show --query user.name -o tsv | grep -oP "\K\w+" | head -1)
 devorgname=${fullorgname//_/}
-patTOKEN=6gsmhudp5tf6j4qe3ro6hc4kmc5yalbnbzvme4dlvguqz2j6irka
-# Read PAT from user
 
-# while read -sp "Enter Personal Access Token(PAT) defined in Azure pipelines: " pat; do
-#     if [ -z $pat ]; then
-#         break
-#     fi
+# Read PAT from user
+patTOKEN= read -p "Enter Personal Access Token (PAT):"
+
+while [[ "$inp" =~ [^a-zA-Z0-9]{30, } || -z "$inp" || =~ [^a-zA-Z0-9] ]]
+do        
+   echo "Enter a valid PAT, which doesn't contain special characters"        
+   
+   
+# Input from user
+   read -p "Input : " inp
+   
+   
+#loop until the user enters only alphanumeric characters.
+done
 
 # The steps below require prompts to SSH
 ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF

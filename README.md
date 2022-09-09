@@ -1,4 +1,5 @@
-![Github Actions Build](.github/workflows/actions.yml)
+![Github Actions Build Status](https://github.com/MortalKommit/DE06_devops_pipeline/actions/workflows/actions.yml/badge.svg)
+
 # Overview
 
 <TODO: complete this with an overview of your project>

@@ -18,7 +18,7 @@ jobs:
         make -f Makefile install
     - name: Install linter and test libraries
       run: |
-        make -f Makefile linter-test-install
+        make -f Makefile setup
     - name: Lint with pylint
       run: |
         make -f Makefile lint
