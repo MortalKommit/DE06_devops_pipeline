@@ -16,7 +16,7 @@ test:
 	#echo $!
 	python3 -m pytest -vv tests/*.py
 load-test:
-	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 60s
+	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:${PORT} -t 60s
 lint:
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles
 	pylint --disable=R,C,W1203,W0703 app.py

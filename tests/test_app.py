@@ -3,12 +3,12 @@ import pytest
 import json
 import os
 import requests
-from DE06_devops_pipeline import app
+import app
 
 @pytest.fixture()
 def client():
     with open("sample_request.json") as f:
-        app.config['TESTING'] = True
+        app.config.from_pyfile('flask_test.cfg', silent=True)
         client = app.test_client()
         yield client
         # request_data = json.load(f)
