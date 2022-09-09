@@ -74,10 +74,10 @@ sleep 40s
 
 # Read PAT from user
 
-while read -sp "Enter Personal Access Token(PAT) defined in Azure pipelines: " pat; do
-    if [ -z $pat ]; then
-        break
-    fi
+# while read -sp "Enter Personal Access Token(PAT) defined in Azure pipelines: " pat; do
+#     if [ -z $pat ]; then
+#         break
+#     fi
 
 # The steps below require prompts to SSH
 ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
