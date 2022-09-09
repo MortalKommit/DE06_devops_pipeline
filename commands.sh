@@ -1,4 +1,18 @@
+#!/usr/bin/env bash
+# Run script only in home directory
+shopt -s expand_aliases
+
+current_dir=$PWD
+if [[ $PWD = $HOME ]] 
+then
+    echo "Script running in Home directory" 
+else
+    echo "Switching to home before running script"
+    cd $HOME
+fi
 # Download miniconda for python 3.7
+
+
 condapath=$(which conda)
 if  [[ $? != 0 ]]
 then 
@@ -8,10 +22,56 @@ then
 else echo "Conda found at $condapath"
 fi
 
+cd $current_dir
+
 # Add to path
-export PATH=~/miniconda3/bin:$PATH
+#export PATH=~/miniconda3/bin:\$PATH
 
-# Alias command
-alias python3=python3.7
+if cat ~/.bashrc |  grep -oP "PATH=~/.*conda.*"
+then   
+    echo "export PATH=~/miniconda3/bin:\$PATH" >> ~/.bashrc
+fi
 
-az webapp up -n flask-ml-service206174
+if  cat ~/.bash_aliases |  grep -oP "PATH=~/.*conda.*"
+then   
+    echo "export PATH=~/miniconda3/bin:\$PATH" >> ~/.bash_aliases
+fi
+
+# Alias python3 command
+if grep -oP "alias python3=python3.7" ~/.bashrc
+then 
+    echo "Python alias present in bashrc"
+else 
+    echo "alias python3=python3.7" >> ~/.bashrc
+fi
+
+# Alias python3 command
+if grep -oP "alias python3=python3.7" ~/.bash_aliases
+then 
+    echo "Python alias present in bash_aliases"
+else 
+    echo "alias python3=python3.7" >> ~/.bash_aliases
+fi
+
+# Alias pip command
+if grep -oP "alias pip='python3.7 -m pip'" ~/.bashrc
+then 
+    echo "Pip alias present in bash_aliases"
+else 
+    echo "alias pip='python3.7 -m pip'" >> ~/.bashrc
+fi
+
+# Alias python3 command
+if grep -oP "alias pip='python3.7 -m pip'" ~/.bash_aliases
+then 
+    echo "Pip  alias present in bash_aliases"
+else 
+    echo "alias pip='python3.7 -m pip'" >> ~/.bash_aliases
+fi
+
+. ~/.bashrc
+. ~/.bash_aliases
+
+odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+")
+
+az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 

@@ -9,9 +9,8 @@ linter-test-install:
 	pip install pylint pytest
 
 test:
-	#python -m pytest -vv --cov=myrepolib tests/*.py
-	#python -m pytest --nbval notebook.ipynb
-
+	#python3 -m pytest -vv --cov=myrepolib tests/*.py
+	#python3 -m pytest --nbval notebook.ipynb
 
 lint:
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles

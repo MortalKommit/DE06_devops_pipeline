@@ -24,6 +24,7 @@ conda create -n .env --file requirements.txt -y && conda activate
 subscription_name=$(az account show --query name -o tsv)
 tenant_id=$(az account show --query tenantId -o tsv)
 odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+")
+
 az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 
 
 #git clone https://github.com/MortalKommit/DE06_devops_pipeline.git && cd $(basename $_ .git)
@@ -44,8 +45,6 @@ az vm open-port --resource-group Azuredevops --name agentVM --port 443
 #     --destination-port-range 443
 
 
-# Initially build webapp from local files
-az webapp up 
 # az vm run-command invoke --resource-group Azuredevops --name agentVM \
 #     --command-id RunShellScript --scripts @package_install_script.sh
 
