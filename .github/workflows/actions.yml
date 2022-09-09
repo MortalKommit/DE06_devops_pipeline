@@ -24,5 +24,5 @@ jobs:
         make -f Makefile lint
     - name: Test with pytest
       run: |
-        make -f Makefile test
+        make -f Makefile test load-test
         
