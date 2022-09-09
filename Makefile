@@ -5,17 +5,17 @@ setup:
 install:
 	pip install --upgrade pip && \
 		pip install -r requirements.txt && \
-		pip install locust
-
+		pip install locust && \
+		pip install locust-plugins
 test:
 	#python3 -m pytest -vv --cov=myrepolib tests/*.py
 	#python3 -m pytest --nbval notebook.ipynb
-	python3.7 -m pytest -vv tests/*.py -p no:warnings
+	python3.7  -m pytest -vv tests/*.py -p no:warnings
 
 load-test:
 	nohup timeout 60 python app.py &
 	pid=${$!}
-	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 40s
+	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 40s --check-fail-ratio 0.08
 
 lint:
 	#hadolint Dockerfile #uncomment to explore linting Dockerfiles

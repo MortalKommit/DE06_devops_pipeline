@@ -1,5 +1,5 @@
 from locust import HttpUser, task, between
-
+import locust_plugins
 
 class FlaskMLAppUser(HttpUser):
     # Wait between 5 to 10 seconds between task
