@@ -9,11 +9,11 @@ install:
 
 linter-test-install:
 	pip install pylint pytest
-	nohup timeout 20 python app.py & 
-	echo $!
 test:
 	#python3 -m pytest -vv --cov=myrepolib tests/*.py
 	#python3 -m pytest --nbval notebook.ipynb
+	#nohup timeout 60 python app.py & 
+	#echo $!
 	python3 -m pytest -vv tests/*.py
 load-test:
 	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 60s
