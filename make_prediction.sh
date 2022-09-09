@@ -5,7 +5,7 @@ echo "Port: $PORT"
 
 # Check if running inside docker or on host machine
 if grep -q docker /proc/1/cgroup; then 
-   echo inside docker 
+   echo "Running inside docker" 
    PORT=80
 else
    echo "Running webapp on VM/non-container machine"
