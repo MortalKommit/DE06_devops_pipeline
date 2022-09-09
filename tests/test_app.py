@@ -15,5 +15,9 @@ def flask_response():
         # r = requests.post(url="http://localhost:5000", data=request_data)        
         # return r
 
+def test_request_example(client):
+    response = client.get("/")
+    assert b"<h3>Sklearn Prediction Home</h3>" in response.data
+
 # def test_valid_json_payload(flask_response):
 #     assert type(flask_response) == dict
