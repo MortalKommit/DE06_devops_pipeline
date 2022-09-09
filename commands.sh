@@ -61,12 +61,20 @@ else
     echo "alias pip='python3.7 -m pip'" >> ~/.bashrc
 fi
 
-# Alias python3 command
-if grep -oP "alias pip='python3.7 -m pip'" ~/.bash_aliases
+# Alias pip command
+if grep -oP "alias pip='python3.7 -m pylint'" ~/.bashrc
 then 
-    echo "Pip  alias present in bash_aliases"
+    echo "Pylint alias present in bashrc"
 else 
-    echo "alias pip='python3.7 -m pip'" >> ~/.bash_aliases
+    echo "alias pip='python3.7 -m pylint'" >> ~/.bashrc
+fi
+
+# Alias pylint command
+if grep -oP "alias pylint='python3.7 -m pylint'" ~/.bash_aliases
+then 
+    echo "Pylint alias present in bash_aliases"
+else 
+    echo "alias pylint='python3.7 -m pylint'" >> ~/.bash_aliases
 fi
 
 . ~/.bashrc
