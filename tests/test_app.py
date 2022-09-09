@@ -18,5 +18,7 @@ def test_homepage_request(client):
 def test_prediction_request(client):
     with open("sample_request.json") as f:
         request_data = json.load(f)
-        r = client.post("/predict", json=request_data)
-        print(r)
+        resp = client.post("/predict", json=request_data)
+        assert resp.status_code == 200
+        assert isinstance(resp.json()['prediction'], list)
+        
