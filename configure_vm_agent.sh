@@ -1,16 +1,24 @@
-# !/bin/bash
+#!/bin/bash
 # Download and setup conda path
 
 cd $HOME
 
 # Download miniconda for python 3.7
 condapath=$(which conda)
+
 if  [[ $? != 0 ]]
 then 
-    echo "Conda not found. Downloading and Installing Miniconda..."
-    wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.9.2-Linux-x86_64.sh && sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
+    echo "Conda not found. Checking for existing Miniconda download..."
+    if (ls | grep -q Miniconda3-py37_4.9.2-Linux-x86_64.sh); then
+        echo "Package found, installing..." && \
+        sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
+    else 
+        wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.9.2-Linux-x86_64.sh && sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
+    fi
+
     # Add to path
-    export PATH=~/miniconda3/bin:$PATH  
+    export PATH=~/miniconda3/bin:$PATH
+    if echo "export PATH=~/miniconda3/bin:$PATH" >> ~/.bashrc  
 else 
     echo "Conda found installed at $condapath"
 fi
@@ -37,10 +45,11 @@ az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number
 az vm create --name agentVM --resource-group Azuredevops --size Standard_DS1_v2 \
     --image UbuntuLTS --admin-username  devopsagent --admin-password devopsagent@123 --nsg-rule SSH \
     --public-ip-sku Standard --nic-delete-option delete --os-disk-delete-option delete 
-# Only for dev/test - prefer NSG rule below
+
+# Open port for invoke command dev/test - prefer NSG rule below
 az vm open-port --resource-group Azuredevops --name agentVM --port 443
 
-
+# Alternative shell script commands to open port
 # az network nsg rule create \
 #     --resource-group Azuredevops \
 #     --nsg-name myNetworkSecurityGroup \
@@ -62,7 +71,28 @@ VMPUBLICIP="$(az vm show --name agentVM --resource-group Azuredevops --show-deta
 
 #scp ./package_install_script.sh configure_pylint.sh $admin_user@$VMPUBLICIP:"${download_folder}"
 
-rsync ./package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
+# Trap interrupts and exit instead of continuing the loop
+trap "echo Exited!; exit;" SIGINT SIGTERM
+
+MAX_RETRIES=5
+i=0
+
+# Set the initial return value to failure
+false
+
+while [ $? -ne 0 -a $i -lt $MAX_RETRIES ]
+do
+    i=$(($i+1))
+    rsync -avz --progress --partial ./package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
+    sleep $i * 2
+done
+
+if [ $i -eq $MAX_RETRIES ]
+then
+    echo "Hit maximum number of retries, giving up."
+fi
+
+#rsync ./package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
 
 package_log=$(az vm run-command invoke --resource-group Azuredevops --name agentVM --command-id RunShellScript  \
     --scripts "sudo -u $admin_user bash $home_folder/package_install_script.sh" --query "value[].message" | 
@@ -70,7 +100,7 @@ package_log=$(az vm run-command invoke --resource-group Azuredevops --name agent
 
 echo -e $package_log > package_install_log.log
 
-echo "Package Installation Complete."
+echo "Package Installation Complete. Restarting VM..."
 
 az vm restart --name agentVM --resource-group Azuredevops
 # Wait 40 seconds
@@ -83,14 +113,38 @@ devorgname=${fullorgname//_/}
 # Read PAT from user
 patTOKEN= read -p "Enter Personal Access Token (PAT):"
 
-while [[ "$inp" =~ [^a-zA-Z0-9]{30, } || -z "$inp" || =~ [^a-zA-Z0-9] ]]
+while [[ "$patTOKEN" =~ [^a-zA-Z0-9]{30, } || -z "$patTOKEN" ]]
 do        
    echo "Enter a valid PAT, which doesn't contain special characters"        
    
    
 # Input from user
-   read -p "Input : " inp
+   read -p "Input : " patTOKEN
    
+#loop until the user enters only alphanumeric characters.
+done
+
+     
+echo "Use default agent pool name, agent name? [vmAgentPool, vmAgent]"
+select yn in "yes" "no"; do
+    case $yn in
+        yes ) echo "Pool name: 'vmAgentPool' agent: 'vmAgent'"; 
+              poolName="vmAgentPool"; agentName="vmAgent"; break;;
+        no ) read -p "Enter pool name:" poolName;
+             read -p "Enter agent name:" agentName; 
+             while [[ -z "$poolName"  || -z "$agentName" ]]
+             do        
+                echo "Enter valid pool/agent Names"        
+                read -p "Enter pool name:" poolName;
+                read -p "Enter agent name:" agentName;
+             done
+             break;;
+    esac
+done
+   
+   
+# Input from user
+   read -p "Input : " patTOKEN
    
 #loop until the user enters only alphanumeric characters.
 done
@@ -103,10 +157,11 @@ ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
     rm -r myagent; mkdir myagent && cd myagent && \
     tar -zxvf ../vsts-agent-linux-x64-2.210.0.tar.gz && \
     ./config.sh --unattended --url https://dev.azure.com/$devorgname --auth pat --token $patTOKEN \
-        --pool vmAgentPool --agent vmAgent --acceptTeeEula
-    sudo ./svc.sh install
-    sudo ./svc.sh start
+        --pool $poolName --agent $agentName --acceptTeeEula
+    sudo ./svc.sh install && \
+    sudo ./svc.sh start && \
     exit
 EOF
+until [[ !! || $MAX_RETRIES = 5]]; do sleep 5 ; done
 
 #scp ./vm_agent_internal_script.sh devopsagent@$VMPUBLICIP:~/

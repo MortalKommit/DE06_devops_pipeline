@@ -10,7 +10,7 @@ install:
 test:
 	#python3 -m pytest -vv --cov=myrepolib tests/*.py
 	#python3 -m pytest --nbval notebook.ipynb
-	python3.7  -m pytest -vv tests/*.py -p no:warnings
+	python3.7 -m pytest -vv tests/*.py -p no:warnings
 
 load-test:
 	nohup timeout 60 python app.py &

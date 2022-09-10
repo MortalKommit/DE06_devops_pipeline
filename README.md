@@ -20,13 +20,27 @@ The plan for this project initially included simple setup and deployment of the 
 in Azure shell, the default version of python was changed to python 3.9.
 ![Python 3.9 Screen](images/azure-shell-python.png)
 
-This caused issues with running the project in the Azure shell environment, so a separate pre-compiled version of python had to be installed (due to a lack of privileges to run apt-get), using a miniconda distribution.
+This caused issues with running the project in the Azure shell environment, so a separate pre-compiled version of python had to be configured (due to a lack of privileges to run apt-get) to get the webapp running, using a miniconda distribution.
 
 ## Instructions
 
 ![Basic Architecture Diagram](images/building-a-ci-cd-pipeline.png)
+The diagram shows the sequence of steps in the construction of the project. Code checked into source control, with git is the base  
+of the application. The code is pushed to a remote repository provider, in this case GitHub, which triggers the pipeline to be run on a "push" event.  
+For the step of Continuous Integration, a Makefile is created with steps to lint and test the application. The Makefile defines a series of steps to be followed and represent a crude version of the pipeline build. By integrating the Makefile with GitHub Actions, we
+pass the steps in the Makefile as build steps to the pipeline. The pipeline shows a successful build if the relevant make steps return exit status codes of 0 if they ran without error.  
+In the Continuous Delivery step, the repository on GitHub is connected with Azure Pipelines to generate the built package (zip or archive) after a successful build. This pipeline should connect to a pre-defined Azure webapp and deploy and update the code there.  
+Confirmation that the deployment worked successfully is done by making a POST request, passing input parameters in JSON and receiving a prediction response.
 
-<TODO:  Instructions for running the Python project.  How could a user with no context run this project without asking you for any help.  Include screenshots with explicit steps to create that work. Be sure to at least include the following screenshots:
+![Project Scaffolding](images/project-scaffolding.png)  
+The image above represents the scaffolding of the project. In the first step, code in GitHub is cloned into the Azure cloud shell environment, and the webapp is run in the Azure Cloud Shell environment. 
+
+![Cloned public project](images/cloned-project.png)
+
+A public project may be cloned directly with the URL, however a private project can be cloned by adding the public key of a Shell-generated key (via ssh-keygen) to the Github repo, as shown in the image below. The ssh-keygen creates a public-private string keypair in the .ssh/ HOME folder of the current user.
+
+
+![Cloned private repo](images/clone-ssh-key.png)
 
 * Project running on Azure App Service
 
