@@ -150,7 +150,12 @@ done
 done
 
 # The steps below require prompts to SSH
-ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
+i=0
+MAX_RETRIES=5
+
+until [ "$i" -ge "$MAX_RETRIES" ]
+do
+{ ssh -o StrictHostKeyChecking=no -tt devopsagent@"$VMPUBLICIP" << EOF
     # Download the agent
     curl -O https://vstsagentpackage.azureedge.net/agent/2.210.0/vsts-agent-linux-x64-2.210.0.tar.gz
     # Create the agent
@@ -162,6 +167,10 @@ ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
     sudo ./svc.sh start && \
     exit
 EOF
-until [[ !! || $i -eq $MAX_RETRIES ]]; do sleep 5 ; i=$(($i+1)) done
+} && break
+echo "Retrying.. Attempt $i"
+sleep 5
+i=$((i+1))
+done
 
 #scp ./vm_agent_internal_script.sh devopsagent@$VMPUBLICIP:~/
