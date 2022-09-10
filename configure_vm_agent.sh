@@ -162,6 +162,6 @@ ssh -o StrictHostKeyChecking=no -tt devopsagent@$VMPUBLICIP  << EOF
     sudo ./svc.sh start && \
     exit
 EOF
-until [[ !! || $MAX_RETRIES = 5]]; do sleep 5 ; done
+until [[ !! || $i -eq $MAX_RETRIES ]]; do sleep 5 ; i=$(($i+1)) done
 
 #scp ./vm_agent_internal_script.sh devopsagent@$VMPUBLICIP:~/
