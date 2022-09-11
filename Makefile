@@ -16,7 +16,7 @@ test:
 load-test:
 	nohup timeout 60 python3 app.py &
 	pid=${$!}
-	sleep 1
+	sleep 2s
 	locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 50s --check-fail-ratio 0.08
 
 lint:
