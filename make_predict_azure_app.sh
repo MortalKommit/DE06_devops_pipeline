@@ -12,7 +12,7 @@ webappstate=$(az webapp show  --resource-group Azuredevops --name  flask-ml-serv
             --query "state" -o tsv)
 
 if  [[ ! ( -n $apphostname ) || ! ( -n $webappstate ) || \
-   (! ( $webappstate -eq "Running" ) ]]
+   (! ( $webappstate -eq "Running" ) && ! ( $webappstate -eq "Stopped" )) ]]
 then 
    echo "Webapp service not started. Attempting to start service..."
    az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 
