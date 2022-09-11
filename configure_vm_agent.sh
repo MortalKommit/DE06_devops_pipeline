@@ -26,14 +26,12 @@ else
     echo "Conda found installed at $condapath"
 fi
 
-# Alias command
-alias python3=python3.7
+source ~/.bashrc
 
 cd DE06_devops_pipeline
 
 echo "Configuring environment details..."
 
-conda create -n .env --file requirements.txt -y && conda activate 
 
 subscription_name=$(az account show --query name -o tsv)
 tenant_id=$(az account show --query tenantId -o tsv)
@@ -45,6 +43,7 @@ az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number
 
 #git clone https://github.com/MortalKommit/DE06_devops_pipeline.git && cd $(basename $_ .git)
 
+echo "Webapp Service Started. Creating Virtual Machine for Build Agent"
 az vm create --name agentVM --resource-group Azuredevops --size Standard_DS1_v2 \
     --image UbuntuLTS --admin-username  devopsagent --admin-password devopsagent@123 --nsg-rule SSH \
     --public-ip-sku Standard --nic-delete-option delete --os-disk-delete-option delete 
@@ -73,7 +72,7 @@ home_folder="/home/$admin_user"
 VMPUBLICIP="$(az vm show --name agentVM --resource-group Azuredevops --show-details --query publicIps -o tsv)"
 
 #scp ./package_install_script.sh configure_pylint.sh $admin_user@$VMPUBLICIP:"${download_folder}"
-
+echo "Copying scripts to virtual machine..."
 # Trap interrupts and exit instead of continuing the loop
 trap "echo Exited!; exit;" SIGINT SIGTERM
 
