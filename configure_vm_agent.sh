@@ -175,4 +175,5 @@ sleep 5;
 i=$((i+1))
 done
 
+echo "Configured VM agent, started build agent service."
 #scp ./vm_agent_internal_script.sh devopsagent@$VMPUBLICIP:~/
