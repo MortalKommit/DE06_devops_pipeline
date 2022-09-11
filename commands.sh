@@ -28,9 +28,9 @@ then
 
     # Add to path
     export PATH=~/miniconda3/bin:$PATH
-    if ! grep -oP 'export PATH=~/miniconda3/bin:\$PATH$' ~/.bashrc 
+    if ! grep -oP 'PATH=~/miniconda3/bin:\$PATH$' ~/.bashrc 
     then 
-        echo 'export PATH=~/miniconda3/bin:\$PATH' >> ~/.bashrc
+        echo 'PATH=~/miniconda3/bin:$PATH' >> ~/.bashrc
     fi
 else 
     echo "Conda found installed at $condapath"
@@ -41,14 +41,11 @@ cd $current_dir
 # Add to path
 #export PATH=~/miniconda3/bin:\$PATH
 
-if cat ~/.bashrc |  grep -oP "PATH=~/.*conda.*"
-then   
-    echo "export PATH=~/miniconda3/bin:\$PATH" >> ~/.bashrc
-fi
 
-if  cat ~/.bash_aliases |  grep -oP "PATH=~/.*conda.*"
-then   
-    echo "export PATH=~/miniconda3/bin:\$PATH" >> ~/.bash_aliases
+if  cat ~/.bash_aliases |  grep -soP "PATH=~/.*conda.*"
+then
+    touch ~/.bash_aliases
+    echo 'PATH=~/miniconda3/bin:$PATH' >> ~/.bash_aliases
 fi
 
 # Alias python3 command
@@ -96,5 +93,5 @@ fi
 
 odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+")
 
-make all & \
+make all && \
 az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 

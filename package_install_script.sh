@@ -74,7 +74,7 @@ source ~/.bashrc
 sudo apt-get install python3.7-distutils
 sudo apt-get -y install zip
 python3.7 -m pip install pylint
-#echo 'export PATH=~/.local/bin:$PATH' >> ~/.bashrc
+#echo 'PATH=~/.local/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 source ~/.bash_aliases
 

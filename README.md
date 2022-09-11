@@ -44,8 +44,6 @@ A public project may be cloned directly with the URL, however a private project 
 
 * Project running on Azure App Service
 
-* Project cloned into Azure Cloud Shell
-
 * Passing tests that are displayed after running the `make all` command from the `Makefile`
 
 * Output of a test run
