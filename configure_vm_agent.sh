@@ -144,12 +144,7 @@ select yn in "yes" "no"; do
     esac
 done
    
-   
-# Input from user
-   read -p "Input : " patTOKEN
-   
-#loop until the user enters only alphanumeric characters.
-done
+
 
 # The steps below require prompts to SSH
 i=0
