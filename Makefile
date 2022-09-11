@@ -1,6 +1,6 @@
 setup:
 	python3.7 -m venv .udacity-devops && \
-	source .udacity-devops/bin/activate
+	. .udacity-devops/bin/activate
 	python3 -m pip install pylint pytest
 	python3 -m pip list
 install:
