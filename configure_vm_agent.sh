@@ -115,7 +115,7 @@ devorgname=${fullorgname//_/}
 # Read PAT from user
 patTOKEN= read -sp "Enter Personal Access Token (PAT):"
 
-while [[ "$patTOKEN" =~ [^a-zA-Z0-9]{30, } || -z "$patTOKEN" ]]
+while [[ "$patTOKEN" =~ [^a-zA-Z0-9]{30,} || -z "$patTOKEN" ]]
 do        
    echo "Enter a valid PAT, which doesn't contain special characters"        
    
