@@ -113,7 +113,7 @@ fullorgname=$(az account show --query user.name -o tsv | grep -oP "\K\w+" | head
 devorgname=${fullorgname//_/}
 
 # Read PAT from user
-patTOKEN= read -p "Enter Personal Access Token (PAT):"
+patTOKEN= read -sp "Enter Personal Access Token (PAT):"
 
 while [[ "$patTOKEN" =~ [^a-zA-Z0-9]{30, } || -z "$patTOKEN" ]]
 do        
@@ -121,7 +121,7 @@ do
    
    
 # Input from user
-   read -p "Input : " patTOKEN
+   read -sp "Input : " patTOKEN
    
 #loop until the user enters only alphanumeric characters.
 done
