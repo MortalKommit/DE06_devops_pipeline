@@ -85,9 +85,9 @@ false
 
 while [ $? -ne 0 -a $i -lt $MAX_RETRIES ]
 do
-    i=$(($i+1))
+    sleep 3s;
+    i=$(($i+1));
     rsync -avz --progress --partial ./package_install_script.sh $admin_user@$VMPUBLICIP:"${home_folder}"
-    sleep $i * 2
 done
 
 if [ $i -eq $MAX_RETRIES ]
@@ -171,8 +171,8 @@ do
     exit
 EOF
 } && break
-echo "Retrying.. Attempt $i"
-sleep 5
+echo "Retrying.. Attempt $i";
+sleep 5;
 i=$((i+1))
 done
 
