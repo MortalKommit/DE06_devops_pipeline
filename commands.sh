@@ -61,6 +61,7 @@ if grep -oP "alias python3=python3.7" ~/.bash_aliases
 then 
     echo "Python alias present in bash_aliases"
 else 
+    touch ~/.bash_aliases
     echo "alias python3=python3.7" >> ~/.bash_aliases
 fi
 
@@ -84,7 +85,8 @@ fi
 if grep -oP "alias pylint='python3.7 -m pylint'" ~/.bash_aliases
 then 
     echo "Pylint alias present in bash_aliases"
-else 
+else
+    touch ~/.bash_aliases
     echo "alias pylint='python3.7 -m pylint'" >> ~/.bash_aliases
 fi
 
