@@ -18,7 +18,10 @@ then
 
     # Add to path
     export PATH=~/miniconda3/bin:$PATH
-    if echo "export PATH=~/miniconda3/bin:$PATH" >> ~/.bashrc  
+    if ! grep -oP 'export PATH=~/miniconda3/bin:\$PATH$' ~/.bashrc 
+    then 
+        echo 'export PATH=~/miniconda3/bin:\$PATH' >> ~/.bashrc
+    fi
 else 
     echo "Conda found installed at $condapath"
 fi

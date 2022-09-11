@@ -13,15 +13,29 @@ fi
 # Download miniconda for python 3.7
 
 
+# Download miniconda for python 3.7
 condapath=$(which conda)
+
 if  [[ $? != 0 ]]
 then 
-    echo "Conda not found. Downloading and Installing Miniconda..."
-    wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.9.2-Linux-x86_64.sh && sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
+    echo "Conda not found. Checking for existing Miniconda download..."
+    if (ls | grep -q Miniconda3-py37_4.9.2-Linux-x86_64.sh); then
+        echo "Package found, installing..." && \
+        sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
+    else 
+        wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.9.2-Linux-x86_64.sh && sh Miniconda3-py37_4.9.2-Linux-x86_64.sh -u -b -p
+    fi
 
-else echo "Conda found at $condapath"
+    # Add to path
+    export PATH=~/miniconda3/bin:$PATH
+    if ! grep -oP 'export PATH=~/miniconda3/bin:\$PATH$' ~/.bashrc 
+    then 
+        echo 'export PATH=~/miniconda3/bin:\$PATH' >> ~/.bashrc
+    fi
+else 
+    echo "Conda found installed at $condapath"
 fi
-
+# Change back to project directory
 cd $current_dir
 
 # Add to path
@@ -82,4 +96,5 @@ fi
 
 odl_number=$(az account show --query user.name -o tsv | grep -oP "odl_user_\K\d+")
 
+make all & \
 az webapp up --resource-group "Azuredevops" --name "flask-ml-service${odl_number}" 
