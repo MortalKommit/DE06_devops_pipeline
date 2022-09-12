@@ -116,7 +116,7 @@ Possible enhancements for the project, in presumed increasing order of difficult
  - Deploy to kubernetes cluster, would require Azure Container Registry and Azure Kubernetes Service
  - Addition of better validation and usage of FastAPI or the Falcon framework  which would increase speed of the webapp.
  - Queueing of requests to serve larger number of users 
-
+ - Add configuration of VM Agent as part of Packer post image scripts, set up Terraform for creation of resources
 ## Demo 
 
 Please use the code walkthrough listed below and follow along as you run the commands, and configure the CI/CD pipeline for this project. The thumbnail is clickable, and links to the youtube-hosted video for the project.
