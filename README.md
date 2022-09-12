@@ -71,7 +71,7 @@ Keeping in mind the spirit of 'Ruthless Automation', I have pre-configured the c
 Users are prompted for input only while remoting to the the machine via SSH and for providing the Personal Access Token(PAT).  
 
 As a pre-requisite of running this script, a service connection using the Azure Resource Manager Service Principal, 
-a PAT, and an agent pool called `vmAgentPool` need to be created
+a PAT, and an agent pool called `vmAgentPool` need to be created. A resource group named `Azuredevops` must also exist.
 This script can be run with the command 
 ```
 bash configure_vm_agent.sh
@@ -116,7 +116,7 @@ Possible enhancements for the project, in presumed increasing order of difficult
  - Deploy to kubernetes cluster, would require Azure Container Registry and Azure Kubernetes Service
  - Addition of better validation and usage of FastAPI or the Falcon framework  which would increase speed of the webapp.
  - Queueing of requests to serve larger number of users 
- 
+
 ## Demo 
 
 Please use the code walkthrough listed below and follow along as you run the commands, and configure the CI/CD pipeline for this project. The thumbnail is clickable, and links to the youtube-hosted video for the project.
