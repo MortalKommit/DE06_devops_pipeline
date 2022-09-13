@@ -1,9 +1,13 @@
 import traceback
 import logging
+import warnings
+warnings.simplefilter(action='ignore', category=DeprecationWarning)
+
 from flask import Flask, request, jsonify
 from flask.logging import create_logger
 import pandas as pd
-
+from sklearn.exceptions import DataConversionWarning
+warnings.simplefilter(action='ignore', category=DataConversionWarning)
 from sklearn.externals import joblib
 from sklearn.preprocessing import StandardScaler
 

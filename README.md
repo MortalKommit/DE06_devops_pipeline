@@ -61,6 +61,18 @@ make all
 which should display results similar to the screenshot below. Note that the repository has been renamed (earlier named DE-06-start-repo), and a few more tests have been added since the screenshot.  
 ![Make tests passed](images/makefile-passed-tests.png)
 
+### Load test with Locust  
+The Makefile has a step `load-test` that is run when calling make all, that runs locust, an application to load test webapps in headless mode.  
+This command is run as 
+```
+locust -f locustfile.py --headless -u 10 -r 1 -H http://localhost:5000 -t 50s --check-fail-ratio 0.08 \ --only-summary
+```  
+and will load test the flask app (flask server must be running in a separate session).
+
+![Locust Load Test Start](images/locust-load-test-start.png)
+
+After finishing the load test, locust will display summary statistics:
+![Locust Load Test Results](images/locust-load-test-results.png)
 ### Configuring the Build Agent
 The build agent is a server program that builds the code, runs tests and steps defined in a config file and creates artifacts (zip/tar) from the project.  
 Azure provides a default build agent, however this option is unavailable while using the Udacity Cloud Lab.  
@@ -123,3 +135,5 @@ Please use the code walkthrough listed below and follow along as you run the com
 
 [![Code Walkthrough](https://img.youtube.com/vi/UumZwrlamqg/0.jpg)](https://youtu.be/UumZwrlamqg "CI/CD Pipeline Code Walkthrough")  
 
+## Changelog
+- 13-09-2022: Updated after review comments, added locust load test images to README. Suppressed deprecation Warnings
